@@ -109,6 +109,7 @@ const Datastore = require('nedb');
                     await page.goto('https://hurt.handlosfera.pl/wszystkie' + podstronki + '.html')
                     ]);
                     products = await page.$$('.singleProductContainer');
+                    await page.waitForTimeout(60000);
                 }
 
     console.log('The subpage of ' + link + ' number ' + podstronki + ' has been finished.')
