@@ -1,0 +1,66 @@
+html {
+	background-image: url("background.jpg");
+    background-color: #cccccc;
+    font-size: 18px;
+}
+h1 {
+    color: transparent;
+    text-shadow: 0 0 1px white;
+      margin: auto;
+      width: 50%;
+      font: bold 128px Helvetica;
+      font-weight: 900;
+      font-size: 60px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      
+      text-align: center;
+    }
+
+#glitch {
+    text-shadow: 0 0 4px white;
+    text-decoration: line-through;
+    font: bold 96px Helvetica;
+}
+
+thead {
+    background-color: #e8c2ad;
+}
+
+div {
+    background-color: black;
+}
+
+table {
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+    text-align: center;
+}
+.even {
+    background-color: white;
+    margin: auto;
+}
+
+.odd {
+    background-color: #A2A3BB;
+    margin: auto;
+}
+
+label {
+    size: 120%;
+    font: bold 20px Helvetica;
+    color:white;
+}
+form {
+    align-content: center;
+}
+
+#first {
+    font: bold 20px Helvetica;
+    color:white;
+}
+
+button, input {
+    font-size: 20px;
+}
