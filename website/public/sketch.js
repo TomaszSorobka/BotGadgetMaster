@@ -1,6 +1,6 @@
 getData();
 let sortingnumber = '';
-//DATE VARIABLES
+//VARIABLES DECLARATION
 let fromd = '2021-08-07';
 let tod = '2021-08-09';
 let removercount = 0;
@@ -10,11 +10,8 @@ let sprzedanovar = 0;
 let stock2var = 0;
 let todarray = [];
 let workingarray =[];
-let index;
-let index2;
-let pricevar;
-let stockvar;
-let wartoscvar;
+let oddoreven = 1;
+let index, index2, pricevar, stockvar, wartoscvar;
 
       async function getData() {
         const response = await fetch('/api');
@@ -23,15 +20,14 @@ let wartoscvar;
         let editdata = [];
         
         console.log(data);
-        //establishing which products to show
+        //establishing which products to show from the first date
         editdata = data.filter(x => x.date == fromd);
-        // continuation
+        //establishing which products to show from the second date
         todarray = data.filter(x => x.date == tod);
         for (let i = 0; i<todarray.length; i++) {  
-          
           if (editdata.find(x => x.productname == todarray[i].productname) == undefined) editdata.push(todarray[i]);
         }
-//sortowanie
+        //SORTOWANIEEE
         if (sortingnumber == 'produkt' ) {
           editdata.sort(function(a,b){
              let textA = a.productname.toUpperCase();
@@ -44,7 +40,6 @@ let wartoscvar;
             {return a.stock-b.stock}
               }
           );
-
         } else if (sortingnumber == 'cena') {
           editdata.sort(function(a,b){
             {return a.price-b.price}
@@ -56,7 +51,6 @@ let wartoscvar;
               }
           );
         }
-
         console.log(editdata);
         
         // BUDOWANIE CALEJ STRONKI
@@ -99,13 +93,11 @@ let wartoscvar;
         cenaBtn.textContent = 'Cena';
         cena.append(cenaBtn);
 
-
         const wartosc = document.createElement('th');
         const wartoscBtn = document.createElement('button');
         wartoscBtn.textContent = 'Wartość produktów';
         wartosc.append(wartoscBtn);
-
-
+        // APPENDING EVERYTHING TO THE DOCUMENT.BODY
         tr.append(prod, ilosc, zakupiono, sprzedano, ilosc2, cena, wartosc);
         thead.append(tr);
         table.append(thead);
@@ -113,7 +105,6 @@ let wartoscvar;
         document.body.append(table);
 
 
-let oddoreven = 1;
         // TWORZENIE TABELI         
 
         for (item of editdata) {
@@ -122,35 +113,34 @@ let oddoreven = 1;
             zakupionovar = 0;
             sprzedanovar = 0;
             stock2var = 0;
+            // naprzemienny kolor rzedów w tabeli
             if (oddoreven%2 == 0) {
             root.classList.add('even');
         } else {
             root.classList.add('odd');
             }
             oddoreven++;
-
+            // wydzielenie wszystkich wpisow jednego produktu
             workingarray = data.filter(x => x.productname == item.productname);
             if (workingarray.find(x => x.date == tod) == undefined ) {
               // prowizoryczny error catch
             }
             else  {
               stock2var = workingarray.find(x => x.date == tod).stock;
-
             }
             
-            // loop for zakupiono, sprzedano i stock2
-
+            // POSORTOWANIE wydzielonych wpisow po dacie
             workingarray.sort(function(a,b){
                let textA = a.date;
                let textB = b.date;
                return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
                }
             );
-              //get index 
+              //Pozyskanie indexow wpisow z pierwszej i drugiej daty
               index = workingarray.findIndex(x => x.date == fromd)+1;
               index2 = workingarray.findIndex(x => x.date == tod)+1;
               
-              
+            // LOOP do policzenia zakupiono i sprzedano
             for (let y = index; y<index2; y++) {
               if (workingarray[index-1] == undefined || workingarray[index2-1] == undefined ) {
                 // prowizoryczny error catch
@@ -163,7 +153,7 @@ let oddoreven = 1;
               } 
             }
                
-
+            // tworzenie rzedow w tabeli
             const productname = document.createElement('td');
             const stock = document.createElement('td');
             const ilosczakupiono = document.createElement('td');
@@ -172,31 +162,22 @@ let oddoreven = 1;
             const price = document.createElement('td');
             const wartosc = document.createElement('td');
 
+            // wypełnianie komórek tabeli
             productname.textContent = `${item.productname}`;
-
             if (item.date == fromd) stockvar = item.stock;
               else stockvar = 0;
-
             stock.textContent = stockvar;
-            
             ilosczakupiono.textContent = zakupionovar;
             iloscsprzedano.textContent = sprzedanovar;
             stock2.textContent = stock2var;
             if (workingarray[index2] != undefined) {
               pricevar = workingarray[index2].price
             } else pricevar = item.price;
-            
             price.textContent = pricevar.toFixed(2) +' PLN'; 
-            
             wartoscvar = pricevar * stock2var;
-            console.log(pricevar*3)
-
             wartosc.textContent = wartoscvar.toFixed(2) +' PLN';
             
-//SORTOWANIE
-            
-
-
+            //wrzucenie wszystkiego na strone
             root.append(productname, stock, ilosczakupiono, iloscsprzedano, stock2, price, wartosc);
             tbody.append(root);
             
