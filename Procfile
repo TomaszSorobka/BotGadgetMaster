@@ -1,1 +1,1 @@
-web: node .\website\index.js
+web: node index.js
