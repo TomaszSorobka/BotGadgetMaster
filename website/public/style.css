@@ -2,6 +2,7 @@ html {
 	background-image: url("background.jpg");
     background-color: #cccccc;
     font-size: 18px;
+    background-attachment: fixed;
 }
 h1 {
     color: transparent;

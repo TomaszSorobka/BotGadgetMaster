@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const Datastore = require('nedb');
 
 (async () => {
-  const browser = await puppeteer.launch({headless: false});
+  const browser = await puppeteer.launch({headless: false, args: ["--no-sandbox", "--disable-setuid-sandbox"]});
   const page = await browser.newPage();
   await page.goto('https://hurt.handlosfera.pl/login');
   let link = 'https://hurt.handlosfera.pl/wszystkie.html'
@@ -63,7 +63,7 @@ const Datastore = require('nedb');
     products = await page.$$('.singleProductContainer');
 
                 //INNNER LOOP scraping the information
-                for (let i = 8; i<products.length; i++) {
+                for (let i = 0; i<products.length; i++) {
                   
                     //Entering the product
                     await Promise.all([
@@ -102,7 +102,7 @@ const Datastore = require('nedb');
                     data = {productname: productname, stock: stock, price: price, date: UTCdate};
                     arrayofdata.push(data);
                     database.insert(data);
-                    console.log(arrayofdata);
+                    console.log(data);
 
                     await Promise.all([
                     page.waitForNavigation(),
