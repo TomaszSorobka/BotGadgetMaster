@@ -3,6 +3,8 @@ const Datastore = require('nedb');
 const mysql = require('mysql');
 require('dotenv').config();
 
+//puppeteer do wyjebania
+
 const app = express();
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`listening at ${port}`));

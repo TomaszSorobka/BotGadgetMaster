@@ -1,8 +1,8 @@
 getData();
 let sortingnumber = '';
 //VARIABLES DECLARATION
-let fromd = '2021-08-07';
-let tod = '2021-08-09';
+let fromd = '2021-09-02';
+let tod = '';
 let removercount = 0;
 let check = false;
 let zakupionovar = 0;
