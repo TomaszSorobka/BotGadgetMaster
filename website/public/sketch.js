@@ -1,7 +1,7 @@
 getData();
 let sortingnumber = '';
 //VARIABLES DECLARATION
-let fromd = '2021-09-02';
+let fromd = '2021-09-14';
 let tod = '';
 let removercount = 0;
 let check = false;
@@ -31,9 +31,9 @@ tod = UTCdate;
         
         console.log(data);
         //establishing which products to show from the first date
-        editdata = data.filter(x => x.date == fromd);
+        editdata = data.filter(x => x.dater == fromd);
         //establishing which products to show from the second date
-        todarray = data.filter(x => x.date == tod);
+        todarray = data.filter(x => x.dater == tod);
         for (let i = 0; i<todarray.length; i++) {  
           if (editdata.find(x => x.productname == todarray[i].productname) == undefined) editdata.push(todarray[i]);
         }
@@ -50,6 +50,7 @@ tod = UTCdate;
             {return a.stock-b.stock}
               }
           );
+          editdata.sort().reverse(); 
         } else if (sortingnumber == 'cena') {
           editdata.sort(function(a,b){
             {return a.price-b.price}
@@ -60,7 +61,21 @@ tod = UTCdate;
             {return (a.price * a.stock)-(b.price * b.stock)}
               }
           );
+          editdata.sort().reverse(); 
+        } else if (sortingnumber == 'sprzedane') {
+          editdata.sort(function(a,b){
+            {return (b.sprzedanesort)-(a.sprzedanesort)}
+              });
+          editdata.sort().reverse();    
+          
+        } else if (sortingnumber == 'zakupione') {
+          editdata.sort(function(a,b){
+            {return (b.zakupionesort)-(a.zakupionesort)}
+              });
+          editdata.sort().reverse();    
+          
         }
+        
         console.log(editdata);
         
         // BUDOWANIE CALEJ STRONKI
@@ -132,23 +147,23 @@ tod = UTCdate;
             oddoreven++;
             // wydzielenie wszystkich wpisow jednego produktu
             workingarray = data.filter(x => x.productname == item.productname);
-            if (workingarray.find(x => x.date == tod) == undefined ) {
+            if (workingarray.find(x => x.dater == tod) == undefined ) {
               // prowizoryczny error catch
             }
             else  {
-              stock2var = workingarray.find(x => x.date == tod).stock;
+              stock2var = workingarray.find(x => x.dater == tod).stock;
             }
             
             // POSORTOWANIE wydzielonych wpisow po dacie
             workingarray.sort(function(a,b){
-               let textA = a.date;
-               let textB = b.date;
+               let textA = a.dater;
+               let textB = b.dater;
                return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
                }
             );
               //Pozyskanie indexow wpisow z pierwszej i drugiej daty
-              index = workingarray.findIndex(x => x.date == fromd)+1;
-              index2 = workingarray.findIndex(x => x.date == tod)+1;
+              index = workingarray.findIndex(x => x.dater == fromd)+1;
+              index2 = workingarray.findIndex(x => x.dater == tod)+1;
               
             // LOOP do policzenia zakupiono i sprzedano
             for (let y = index; y<index2; y++) {
@@ -163,6 +178,9 @@ tod = UTCdate;
               } 
             }
                
+            item.sprzedanesort = sprzedanovar;
+            item.zakupionesort = zakupionovar;
+            
             // tworzenie rzedow w tabeli
             const productname = document.createElement('td');
             const stock = document.createElement('td');
@@ -174,7 +192,7 @@ tod = UTCdate;
 
             // wypełnianie komórek tabeli
             productname.textContent = `${item.productname}`;
-            if (item.date == fromd) stockvar = item.stock;
+            if (item.dater == fromd) stockvar = item.stock;
               else stockvar = 0;
             stock.textContent = stockvar;
             ilosczakupiono.textContent = zakupionovar;
@@ -211,7 +229,17 @@ tod = UTCdate;
           getData();
            };
         wartoscBtn.onclick = function() {  
-          sortingnumber = 'ilosc';
+          sortingnumber = 'wartosc';
+          document.querySelector('table').remove();
+          getData();
+           };
+        sprzedanoBtn.onclick = function() {  
+          sortingnumber = 'sprzedane';
+          document.querySelector('table').remove();
+          getData();
+           };
+        zakupionoBtn.onclick = function() {  
+          sortingnumber = 'zakupione';
           document.querySelector('table').remove();
           getData();
            };

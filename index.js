@@ -11,28 +11,16 @@ app.listen(port, () => console.log(`listening at ${port}`));
 app.use(express.static('website/public'));
 
 var pool = mysql.createPool({
-    host: 'remotemysql.com',
-    port: '3306', 
-    user: 'v2AqjSz2oR', 
-    password: 'MuvdDi9iwR',
-    database: 'v2AqjSz2oR',
-    connectionLimit: '100',
-    multipleStatements: true
+  host: 'eu-cdbr-west-01.cleardb.com',
+  port: '3306', 
+  user: 'b71a94d125faf7', 
+  password: '575376a6',
+  database: 'heroku_e84c4376fe837e8',
+  connectionLimit: '10',
+  multipleStatements: true
 });
 
-const database = new Datastore('database.db');
-database.loadDatabase();
-
-
 app.get('/api', (request, response) => {
-    // database.find({}, (err, data) => {
-    //     if (err) {
-    //         response.end();
-    //         console.log('error')
-    //         return;
-    //     }
-    //     response.json(data);
-    // });
 
     pool.query('select * from Main', function(err, data){
         if (err) {
